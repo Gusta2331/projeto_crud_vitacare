@@ -20,7 +20,7 @@ A evolução técnica do software ocorrerá em duas fases pedagógicas estratég
 
 ## 2. Escopo do Domínio e Entidades
 
-Cada projeto deverá contemplar **pelo menos 6 entidades de domínio correlacionadas**, contendo:
+Cada projeto deverá contemplar **pelo menos 3 entidades de domínio correlacionadas**, contendo:
 * Entidades Fortes e Fracas;
 * Relacionamentos do tipo $1:N$ e pelo menos um relacionamento $N:N$ resolvido por uma Entidade Associativa com atributos próprios;
 * Chaves identificadoras claras (Chave Primária - PK e Chave Estrangeira - FK).
