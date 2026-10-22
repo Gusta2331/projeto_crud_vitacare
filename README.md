@@ -46,10 +46,10 @@ projeto_crud/
 ├── repositories/                # Camada responsável pelo armazenamento e consultas
 │   ├── contrato_exemplo.py      # Modelo de referência com os nomes padrão de métodos
 │   ├── memory/                  # Fase 1: CRUD manipulando listas e dicionários
-│   │   ├── cliente_repo_memory.py
+│   │   ├── cliente_memory_repository.py
 │   │   └── ...
 │   └── sql/                     # Fase 2: CRUD executando comandos SQL
-│       ├── cliente_repo_sql.py
+│       ├── cliente_database_repository.py
 │       └── ...
 │
 ├── services/                    # Regras de negócio, cálculos analíticos e validações
@@ -70,25 +70,25 @@ projeto_crud/
 Em vez de bibliotecas complexas de abstração, a turma aplicará o **contrato por convenção**: os repositórios em memória e os repositórios em banco de dados devem possuir **exatamente os mesmos nomes de métodos e parâmetros**.
 
 ### Convenção Padrão de Nomenclatura:
-* `salvar(objeto)`: Adiciona um novo registro na coleção ou executa `INSERT INTO`.
-* `listar_todos()`: Retorna todos os registros armazenados.
-* `buscar_por_id(id)`: Retorna a entidade correspondente ou `None` caso não exista.
-* `atualizar(objeto)`: Aplica as alterações no registro correspondente.
-* `remover(id)`: Exclui o registro com base no identificador (retorna `True` ou `False`).
+* `save(objeto)`: Adiciona um novo registro na coleção ou executa `INSERT INTO`.
+* `get_all()`: Retorna todos os registros armazenados.
+* `find_by_id(id)`: Retorna a entidade correspondente ou `None` caso não exista.
+* `update(objeto)`: Aplica as alterações no registro correspondente.
+* `delete(id)`: Exclui o registro com base no identificador (retorna `True` ou `False`).
 
 ### A Troca no `main.py`:
 Durante a transição da Fase 1 para a Fase 2, a aplicação deve manter seu funcionamento normal apenas alterando a inicialização do repositório:
 
 ```python
 # --- Fase 1 (Semanas 1 e 2) ---
-# repo = ClienteRepositoryMemory()
+# cliente_repo = ClienteRepositoryMemory()
 
 # --- Fase 2 (Semanas 3 e 4) ---
 conexao = criar_conexao()
-repo = ClienteRepositorySQL(conexao)
+cliente_repo = ClienteRepositorySQL(conexao)
 
 # O restante do menu CLI permanece 100% inalterado:
-clientes = repo.listar_todos()
+clientes = cliente_repo.get_all()
 ```
 
 ---
@@ -133,10 +133,10 @@ clientes = repo.listar_todos()
 ## 8. Identificação do Grupo
 
 * **Nome do Sistema:** `[Preencher]`
-* **Link da Atividade (Google Drive):** `[Inserir Link]`
+* **Tema Escolhido:** `[Preencher]`
 * **Equipe de Desenvolvimento:**
-  1. `[Nome Completo - Matrícula / E-mail]`
-  2. `[Nome Completo - Matrícula / E-mail]`
-  3. `[Nome Completo - Matrícula / E-mail]`
-  4. `[Nome Completo - Matrícula / E-mail]`
-  5. `[Nome Completo - Matrícula / E-mail]`
+  - `[Nome Completo]`
+  - `[Nome Completo]`
+  - `[Nome Completo]`
+  - `[Nome Completo]`
+  - `[Nome Completo]`
