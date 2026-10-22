@@ -35,32 +35,25 @@ O código deve seguir estritamente o princípio da **Separação de Responsabili
 projeto_crud/
 │
 ├── database/
-│   ├── connection.py            # Criação da conexão com o banco de dados
-│   └── schema.sql               # Script DDL (CREATE TABLE com constraints)
+│   ├── connection.py                # Criação da conexão com o banco de dados
+│   └── schema.sql                   # Script DDL (CREATE TABLE com constraints)
 │
-├── models/                      # Classes do domínio (POO com __init__ e atributos)
+├── models/                          # Classes do domínio (POO com __init__ e atributos)
 │   ├── cliente.py
 │   ├── veiculo.py
 │   └── ...
 │
-├── repositories/                # Camada responsável pelo armazenamento e consultas
-│   ├── contrato_exemplo.py      # Modelo de referência com os nomes padrão de métodos
-│   ├── memory/                  # Fase 1: CRUD manipulando listas e dicionários
-│   │   ├── cliente_memory_repository.py
-│   │   └── ...
-│   └── sql/                     # Fase 2: CRUD executando comandos SQL
-│       ├── cliente_database_repository.py
-│       └── ...
+├── repositories/                      # Camada responsável pelo armazenamento e consultas
+│   ├── cliente_memory_repository.py   # Fase 1: CRUD manipulando listas e dicionários
+│   └── cliente_database_repository.py # Fase 2: CRUD executando comandos SQL
 │
-├── services/                    # Regras de negócio, cálculos analíticos e validações
+├── services/                          # Regras de negócio, cálculos analíticos e validações
 │   └── ...
 │
-├── utils/                       # Validadores de entrada (try/except) e formatações
-│   └── validadores.py
 │
-├── requirements.txt             # Dependências da aplicação
-├── main.py                      # Menu CLI interativo do sistema
-└── README.md                    # Documentação do projeto da equipe
+├── requirements.txt                   # Dependências da aplicação
+├── main.py                            # Menu CLI interativo do sistema
+└── README.md                          # Documentação do projeto da equipe
 ```
 
 ---
