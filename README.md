@@ -125,12 +125,11 @@ clientes = cliente_repo.get_all()
 
 ## 8. Identificação do Grupo
 
-* **Nome do Sistema:** `[Preencher]`
+* **Nome do Sistema:** `Gestão Hospitalar e Consultas - VitaCare`
 * **Link da Atividade (Google Drive):** [Propostas de Projetos CRUD - Engenharia de Software](https://docs.google.com/document/d/13PCZjxVaOd-qq50ej_Bu1DkNeEINvOH17ZgtNX_fxKE/edit)
-* **Tema Escolhido:** `[Preencher]`
+* **Tema Escolhido:** `Tema 2: VitaCare — Gestão Hospitalar e Consultas`
 * **Equipe de Desenvolvimento:**
-  - `[Nome Completo]`
-  - `[Nome Completo]`
-  - `[Nome Completo]`
-  - `[Nome Completo]`
-  - `[Nome Completo]`
+  - `Gustavo Santana Martins`
+  - `Enzzo Mauricio Costa`
+  - `Jone Mauricio Costa Filho`
+  - `Artur Ribeiro de Carvalho`
