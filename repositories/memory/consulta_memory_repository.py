@@ -27,13 +27,7 @@ class ConsultaMemoryRepository:
         return list(self.consultas)
 
     def get_atendimentos_faturamento_por_medico(self):
-        """
-        Calcula a quantidade de atendimentos e o faturamento
-        total de cada médico utilizando laços Python.
-
-        Equivalente ao relatório SQL com LEFT JOIN.
-        """
-
+      
         medicos = self._listar_medicos()
         consultas = self._listar_consultas()
 
@@ -88,12 +82,7 @@ class ConsultaMemoryRepository:
         return resultados
 
     def get_media_valor_por_especialidade(self):
-        """
-        Calcula a média dos valores das consultas
-        agrupadas por especialidade médica.
-
-        Equivalente ao relatório SQL com INNER JOIN.
-        """
+       
 
         medicos = self._listar_medicos()
         consultas = self._listar_consultas()
