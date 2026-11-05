@@ -1,0 +1,3 @@
+# VitaCare — Gestão Hospitalar e Consultas
+# O projeto utiliza exclusivamente bibliotecas nativas do Python 3 (sqlite3, sys, os).
+# Nenhuma biblioteca externa adicional é necessária para a execução.
