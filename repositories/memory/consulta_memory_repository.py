@@ -1,85 +1,117 @@
 from models.consulta import Consulta
 
 class ConsultaMemoryRepository:
-    def __init__(self):
-        self.consultas = {}
+    def __init__(self, consultas=None, medicos=None):
+        self.consultas = consultas if consultas is not None {} else {}
+        # Se for passado um dicionário, mantemos; senão, inicializamos vazio
+        self.medicos = medicos if medicos is not None else {}
         self.proximo_id = 1
-     
-     
-      #Salvar
+
+    def _obter_valor(self, objeto, atributo, padrao=None):
+        if isinstance(objeto, dict):
+            return objeto.get(atributo, padrao)
+        return getattr(objeto, atributo, padrao)
+
+    def _listar_medicos(self):
+        if isinstance(self.medicos, dict):
+            return list(self.medicos.values())
+        return list(self.medicos)
+
+    def _listar_consultas(self):
+        if isinstance(self.consultas, dict):
+            return list(self.consultas.values())
+        return list(self.consultas)
+
+    # --- MÉTODOS DE CRUD ---
     def save(self, consulta):
         consulta.id_consulta = self.proximo_id
         self.consultas[self.proximo_id] = consulta
         self.proximo_id += 1
-
         return consulta
-     
-     #Procurar pelo id
+
     def find_by_id(self, id_consulta):
         return self.consultas.get(id_consulta)
-    
-    #Listar todas as consultas
+
     def get_all(self):
         return list(self.consultas.values())
 
-     #Atualizar consulta
     def update(self, consulta):
         if consulta.id_consulta not in self.consultas:
             return False
-
         self.consultas[consulta.id_consulta] = consulta
         return True
 
-     #Excluir consulta
     def delete(self, id_consulta):
         if id_consulta not in self.consultas:
             return False
-
         del self.consultas[id_consulta]
         return True
 
-            
+    # --- MÉTODOS DE RELATÓRIOS (DA MAIN) ---
+    def get_atendimentos_faturamento_por_medico(self):
+        medicos = self._listar_medicos()
+        consultas = self._listar_consultas()
+        resultados = []
 
+        for medico in medicos:
+            id_medico = self._obter_valor(medico, "id_medico")
+            nome = self._obter_valor(medico, "nome", "Médico não identificado")
 
-if __name__ == "__main__":
+            quantidade = 0
+            faturamento_total = 0
 
-    repositorio = ConsultaMemoryRepository()
+            for consulta in consultas:
+                consulta_id_medico = self._obter_valor(consulta, "id_medico")
 
-    # Criando uma consulta
-    consulta1 = Consulta(
-        id_paciente=1,
-        id_medico=2,
-        data_hora="2026-11-05 14:30",
-        diagnostico="Rotina",
-        valor_consulta=150.0
-    )
+                if consulta_id_medico == id_medico:
+                    quantidade += 1
+                    valor = self._obter_valor(consulta, "valor_consulta", 0)
+                    faturamento_total += float(valor or 0)
 
-    # Testando o save
-    repositorio.save(consulta1)
-    print("Consulta salva:")
-    print(consulta1.to_dict())
+            resultados.append({
+                "id_medico": id_medico,
+                "nome": nome,
+                "quantidade": quantidade,
+                "faturamento_total": faturamento_total
+            })
 
-    # Testando o find_by_id
-    print("\nBuscando consulta:")
-    encontrada = repositorio.find_by_id(1)
-    print(encontrada.to_dict())
+        resultados.sort(key=lambda item: item["nome"])
+        return resultados
 
-    # Testando o get_all
-    print("\nTodas as consultas:")
-    for consulta in repositorio.get_all():
-        print(consulta.to_dict())
+    def get_media_valor_por_especialidade(self):
+        medicos = self._listar_medicos()
+        consultas = self._listar_consultas()
+        especialidades = {}
 
-    # Testando o update
-    consulta1.diagnostico = "Retorno"
-    atualizado = repositorio.update(consulta1)
+        for consulta in consultas:
+            id_medico = self._obter_valor(consulta, "id_medico")
+            valor = self._obter_valor(consulta, "valor_consulta")
 
-    print("\nConsulta atualizada:")
-    print("Atualizou?", atualizado)
-    print(repositorio.find_by_id(1).to_dict())
+            if valor is None:
+                continue
 
-    print("\nExcluindo consulta:")
-excluiu = repositorio.delete(1)
-print("Excluiu?", excluiu)
+            for medico in medicos:
+                id_medico_cadastrado = self._obter_valor(medico, "id_medico")
 
-print("Consultas restantes:")
-print(repositorio.get_all())
+                if id_medico == id_medico_cadastrado:
+                    especialidade = self._obter_valor(medico, "especialidade")
+
+                    if not especialidade:
+                        break
+
+                    if especialidade not in especialidades:
+                        especialidades[especialidade] = []
+
+                    especialidades[especialidade].append(float(valor))
+                    break
+
+        resultados = []
+        for especialidade, valores in especialidades.items():
+            media = sum(valores) / len(valores)
+            resultados.append({
+                "especialidade": especialidade,
+                "media_valor": media
+            })
+
+        resultados.sort(key=lambda item: item["especialidade"])
+        return resultados
