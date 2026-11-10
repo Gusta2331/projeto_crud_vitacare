@@ -2,8 +2,7 @@ from models.consulta import Consulta
 
 class ConsultaMemoryRepository:
     def __init__(self, consultas=None, medicos=None):
-        self.consultas = consultas if consultas is not None {} else {}
-        # Se for passado um dicionário, mantemos; senão, inicializamos vazio
+        self.consultas = consultas if consultas is not None else {}
         self.medicos = medicos if medicos is not None else {}
         self.proximo_id = 1
 

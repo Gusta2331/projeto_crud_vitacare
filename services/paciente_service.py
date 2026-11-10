@@ -1,4 +1,3 @@
-from models import paciente
 from models.paciente import Paciente
 
 class PacienteService:
