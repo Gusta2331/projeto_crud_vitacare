@@ -1,71 +1,71 @@
+from models.consulta import Consulta
+
 class ConsultaMemoryRepository:
-
     def __init__(self, consultas=None, medicos=None):
-
-        self.consultas = consultas if consultas is not None else {}
+        self.consultas = consultas if consultas is not None {} else {}
+        # Se for passado um dicionário, mantemos; senão, inicializamos vazio
         self.medicos = medicos if medicos is not None else {}
+        self.proximo_id = 1
 
     def _obter_valor(self, objeto, atributo, padrao=None):
-
         if isinstance(objeto, dict):
             return objeto.get(atributo, padrao)
-
         return getattr(objeto, atributo, padrao)
 
     def _listar_medicos(self):
-
         if isinstance(self.medicos, dict):
             return list(self.medicos.values())
-
         return list(self.medicos)
 
     def _listar_consultas(self):
-
         if isinstance(self.consultas, dict):
             return list(self.consultas.values())
-
         return list(self.consultas)
 
+    # --- MÉTODOS DE CRUD ---
+    def save(self, consulta):
+        consulta.id_consulta = self.proximo_id
+        self.consultas[self.proximo_id] = consulta
+        self.proximo_id += 1
+        return consulta
+
+    def find_by_id(self, id_consulta):
+        return self.consultas.get(id_consulta)
+
+    def get_all(self):
+        return list(self.consultas.values())
+
+    def update(self, consulta):
+        if consulta.id_consulta not in self.consultas:
+            return False
+        self.consultas[consulta.id_consulta] = consulta
+        return True
+
+    def delete(self, id_consulta):
+        if id_consulta not in self.consultas:
+            return False
+        del self.consultas[id_consulta]
+        return True
+
+    # --- MÉTODOS DE RELATÓRIOS (DA MAIN) ---
     def get_atendimentos_faturamento_por_medico(self):
-      
         medicos = self._listar_medicos()
         consultas = self._listar_consultas()
-
         resultados = []
 
         for medico in medicos:
-
-            id_medico = self._obter_valor(
-                medico,
-                "id_medico"
-            )
-
-            nome = self._obter_valor(
-                medico,
-                "nome",
-                "Médico não identificado"
-            )
+            id_medico = self._obter_valor(medico, "id_medico")
+            nome = self._obter_valor(medico, "nome", "Médico não identificado")
 
             quantidade = 0
             faturamento_total = 0
 
             for consulta in consultas:
-
-                consulta_id_medico = self._obter_valor(
-                    consulta,
-                    "id_medico"
-                )
+                consulta_id_medico = self._obter_valor(consulta, "id_medico")
 
                 if consulta_id_medico == id_medico:
-
                     quantidade += 1
-
-                    valor = self._obter_valor(
-                        consulta,
-                        "valor_consulta",
-                        0
-                    )
-
+                    valor = self._obter_valor(consulta, "valor_consulta", 0)
                     faturamento_total += float(valor or 0)
 
             resultados.append({
@@ -75,48 +75,26 @@ class ConsultaMemoryRepository:
                 "faturamento_total": faturamento_total
             })
 
-        resultados.sort(
-            key=lambda item: item["nome"]
-        )
-
+        resultados.sort(key=lambda item: item["nome"])
         return resultados
 
     def get_media_valor_por_especialidade(self):
-       
-
         medicos = self._listar_medicos()
         consultas = self._listar_consultas()
-
         especialidades = {}
 
         for consulta in consultas:
-
-            id_medico = self._obter_valor(
-                consulta,
-                "id_medico"
-            )
-
-            valor = self._obter_valor(
-                consulta,
-                "valor_consulta"
-            )
+            id_medico = self._obter_valor(consulta, "id_medico")
+            valor = self._obter_valor(consulta, "valor_consulta")
 
             if valor is None:
                 continue
 
             for medico in medicos:
-
-                id_medico_cadastrado = self._obter_valor(
-                    medico,
-                    "id_medico"
-                )
+                id_medico_cadastrado = self._obter_valor(medico, "id_medico")
 
                 if id_medico == id_medico_cadastrado:
-
-                    especialidade = self._obter_valor(
-                        medico,
-                        "especialidade"
-                    )
+                    especialidade = self._obter_valor(medico, "especialidade")
 
                     if not especialidade:
                         break
@@ -124,25 +102,16 @@ class ConsultaMemoryRepository:
                     if especialidade not in especialidades:
                         especialidades[especialidade] = []
 
-                    especialidades[especialidade].append(
-                        float(valor)
-                    )
-
+                    especialidades[especialidade].append(float(valor))
                     break
 
         resultados = []
-
         for especialidade, valores in especialidades.items():
-
             media = sum(valores) / len(valores)
-
             resultados.append({
                 "especialidade": especialidade,
                 "media_valor": media
             })
 
-        resultados.sort(
-            key=lambda item: item["especialidade"]
-        )
-
+        resultados.sort(key=lambda item: item["especialidade"])
         return resultados
