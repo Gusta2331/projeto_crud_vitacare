@@ -1,3 +1,4 @@
+
 import sqlite3
 
 from models.medico import Medico
@@ -14,7 +15,7 @@ def menu_medicos(service) -> None:
         print("4. Remover médico")
         print("0. Voltar")
 
-        opcao = input("informe a opção desejada").strip()
+        opcao = input("Informe a opção desejada: ").strip()
 
         try:
             if opcao == "1":
@@ -28,52 +29,70 @@ def menu_medicos(service) -> None:
                     crm=crm,
                     especialidade=especialidade,
                     telefone=telefone
-                  )
+                )
 
                 medico = service.save(medico)
-                print(f"\nMédico cadastrado com sucesso! "
-                        f"ID: {medico.id_medico}")
+
+                print(
+                    f"\nMédico cadastrado com sucesso! "
+                    f"ID: {medico.id_medico}"
+                )
 
             elif opcao == "2":
-                    medicos = service.get_all()
+                medicos = service.get_all()
 
-                    if not medicos:
-                     print("\nNenhum médico cadastrado.")
-                     continue
+                if not medicos:
+                    print("\nNenhum médico cadastrado.")
+                    continue
 
-                    print("\n========== MÉDICOS CADASTRADOS ==========")
+                print("\n========== MÉDICOS CADASTRADOS ==========")
 
-                    for medico in medicos:
-                     print(f"\nID: {medico.id_medico}")
-                     print(f"Nome: {medico.nome}")
-                     print(f"CRM: {medico.crm}")
-                     print(f"Especialidade: {medico.especialidade}")
-                     print(f"Telefone: {medico.telefone}")
-                    
+                for medico in medicos:
+                    print(f"\nID: {medico.id_medico}")
+                    print(f"Nome: {medico.nome}")
+                    print(f"CRM: {medico.crm}")
+                    print(f"Especialidade: {medico.especialidade}")
+                    print(f"Telefone: {medico.telefone}")
                     print("-----------------------------------------")
 
-            
             elif opcao == "3":
-                id_medico = int(input("informe o ID do médico que deseja atualizar"))
+                id_medico = int(
+                    input("Informe o ID do médico que deseja atualizar: ")
+                )
+
                 medico_existente = service.find_by_id(id_medico)
-                 
+
                 if medico_existente is None:
-                 print("\nMédico não encontrado.")
-                 continue
-           
-                print("\nInforme os dados do novo médico:")
-                nome = input(f"informe o nome do novo médico:" [{medico_existente.nome}]).strip()
-                crm = input(f"CRM [{medico_existente.crm}]: ").strip()
-                especialidade = input("Especialidade "f"[{medico_existente.especialidade}]: ").strip()
-                telefone = input(f"Telefone [{medico_existente.telefone}]: " ).strip()
+                    print("\nMédico não encontrado.")
+                    continue
+
+                print("\nInforme os novos dados do médico:")
+
+                nome = input(
+                    f"Nome [{medico_existente.nome}]: "
+                ).strip()
+
+                crm = input(
+                    f"CRM [{medico_existente.crm}]: "
+                ).strip()
+
+                especialidade = input(
+                    f"Especialidade [{medico_existente.especialidade}]: "
+                ).strip()
+
+                telefone = input(
+                    f"Telefone [{medico_existente.telefone}]: "
+                ).strip()
 
                 medico = Medico(
                     id_medico=id_medico,
                     nome=nome or medico_existente.nome,
                     crm=crm or medico_existente.crm,
-                    especialidade=(especialidade or medico_existente.especialidade),
+                    especialidade=(
+                        especialidade or medico_existente.especialidade
+                    ),
                     telefone=telefone or medico_existente.telefone
-                    )
+                )
 
                 atualizado = service.update(medico)
 
