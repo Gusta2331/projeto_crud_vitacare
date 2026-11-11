@@ -3,7 +3,7 @@ from models.medico import Medico
 class MedicoService:
     def __init__(self, repo):
         self.repo = repo
-    def validar_medico(self, medico: Medico) -> None:
+    def _validar_medico(self, medico: Medico) -> None:
         if not medico.nome or not medico.nome.strip():
             raise ValueError("O nome do médico é obrigatorio!")
 

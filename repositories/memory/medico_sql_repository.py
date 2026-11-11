@@ -1,3 +1,4 @@
+
 import sqlite3
 
 from models.medico import Medico
@@ -44,11 +45,12 @@ class MedicoSqlRepository:
                     medico.telefone
                 )
             )
+
             medico.id_medico = cursor.lastrowid
 
         return medico
 
-    def get_all(self) -> list:
+    def get_all(self) -> list[Medico]:
         sql = """
             SELECT
                 id_medico,
@@ -74,7 +76,7 @@ class MedicoSqlRepository:
             for row in rows
         ]
 
-    def find_by_id(self, id_medico: int) -> Medico:
+    def find_by_id(self, id_medico: int) -> Medico | None:
         sql = """
             SELECT
                 id_medico,
@@ -132,7 +134,10 @@ class MedicoSqlRepository:
         """
 
         with self.connection:
-            cursor = self.connection.execute(sql, (id_medico,))
+            cursor = self.connection.execute(
+                sql,
+                (id_medico,)
+            )
 
         return cursor.rowcount > 0
 
