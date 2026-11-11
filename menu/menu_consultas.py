@@ -25,9 +25,9 @@ def menu_consultas(servico):
                 id_paciente = int(input("ID do paciente: "))
                 id_medico = int(input("ID do médico: "))
                 data_hora = input("Data e hora da consulta: ")
+                diagnostico = input("Diagnóstico: ").strip()
                 valor_consulta = float(input("Valor da consulta: "))
-
-                diagnostico = "Pendente"
+                
             
             except ValueError:
                 print("ID ou valor inválido!")

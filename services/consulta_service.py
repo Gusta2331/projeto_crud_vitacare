@@ -30,6 +30,7 @@ class ConsultaService:
         self.validar_paciente(consulta.id_paciente)
         self.validar_medico(consulta.id_medico)
         self.validar_valor(consulta.valor_consulta)
+        self.validar_conflito_agenda(consulta)
         return self.consulta_repo.save(consulta)
 
     def listar_consultas(self):
@@ -42,6 +43,10 @@ class ConsultaService:
         self.validar_paciente(consulta.id_paciente)
         self.validar_medico(consulta.id_medico)
         self.validar_valor(consulta.valor_consulta)
+        self.validar_conflito_agenda(
+            consulta,
+            ignorar_id=consulta.id_consulta
+        )       
         return self.consulta_repo.update(consulta)
 
     def excluir_consulta(self, id_consulta):
@@ -53,3 +58,19 @@ class ConsultaService:
 
     def get_media_valor_por_especialidade(self):
         return self.consulta_repo.get_media_valor_por_especialidade()
+    
+    def validar_conflito_agenda(self, consulta, ignorar_id=None):
+        consultas = self.consulta_repo.get_all()
+
+        for existente in consultas:
+            if (
+                existente.id_medico == consulta.id_medico
+                and existente.data_hora == consulta.data_hora
+                and existente.id_consulta != ignorar_id
+            ):
+                raise ValueError(
+                    "Este médico já possui uma consulta agendada "
+                    "nessa data e horário."
+                )
+
+        return True

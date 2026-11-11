@@ -26,3 +26,6 @@ CREATE TABLE IF NOT EXISTS consulta (
     FOREIGN KEY (id_paciente) REFERENCES paciente(id_paciente) ON DELETE CASCADE,
     FOREIGN KEY (id_medico) REFERENCES medico(id_medico) ON DELETE RESTRICT
 );
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_consulta_medico_data_hora
+ON consulta (id_medico, data_hora);
