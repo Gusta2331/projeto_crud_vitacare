@@ -25,6 +25,8 @@ class PacienteMemoryRepository:
     def update(self, paciente: Paciente) -> bool:
         if paciente.id_paciente in self.storage:
             self.storage[paciente.id_paciente] = paciente
+            return True
+        return False
             
     def delete(self, id_paciente: int) -> bool:
         if id_paciente in self.storage:
