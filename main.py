@@ -1,7 +1,7 @@
 
-from repositories.sql.medico_sql_repository import MedicoSqlRepository
+from repositories.sql.medico_sql_repository import MedicoSqlRepository # type: ignore
 from services.medico_service import MedicoService
-from menu_medicos import menu_medicos
+from menu_medicos import menu_medicos # pyright: ignore[reportMissingImports]
 
 
 def main():
